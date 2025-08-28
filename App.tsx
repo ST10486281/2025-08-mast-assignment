@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { ScrollView } from 'react-native'; // 👈 add
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider as PaperProvider, IconButton, Portal, Modal } from 'react-native-paper';
@@ -17,45 +18,52 @@ export default function App() {
 
   return (
     <PaperProvider>
-      <NavigationContainer ref={navRef}>
-        <Stack.Navigator
-          screenOptions={({ route, navigation }) => ({
-            headerTitle: () => <BreadcrumbHeader route={route} navigation={navigation} />,
-            headerLeft: () => null,
-            headerRight: () => (
-              <IconButton icon="menu" onPress={() => setMenuVisible(true)} />
-            ),
-            contentStyle: { flex: 1 },
-          })}
-        >
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
-        </Stack.Navigator>
-
-        {/* Drawer Menu */}
-        <Portal>
-          <Modal
-            visible={menuVisible}
-            onDismiss={() => setMenuVisible(false)}
-            contentContainerStyle={{
-              backgroundColor: 'white',
-              width: 300,
-              height: '100%',
-              alignSelf: 'flex-start',
-              paddingTop: 24,
-              justifyContent: 'flex-start',
-              margin: 0,
-            }}
+      
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <NavigationContainer ref={navRef}>
+          <Stack.Navigator
+            screenOptions={({ route, navigation }) => ({
+              headerTitle: () => <BreadcrumbHeader route={route} navigation={navigation} />,
+              headerLeft: () => null,
+              headerRight: () => (
+                <IconButton icon="menu" onPress={() => setMenuVisible(true)} />
+              ),
+              contentStyle: { flex: 1 },
+            })}
           >
-            <DrawerMenuContent
-              active={active}
-              setActive={setActive}
-              onClose={() => setMenuVisible(false)}
-              navigate={(name) => navRef.current?.navigate(name)}
-            />
-          </Modal>
-        </Portal>
-      </NavigationContainer>
+            
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Details" component={DetailsScreen} />
+
+
+          </Stack.Navigator>
+
+          {/* Drawer Menu */}
+          <Portal>
+            <Modal
+              visible={menuVisible}
+              onDismiss={() => setMenuVisible(false)}
+              contentContainerStyle={{
+                backgroundColor: 'white',
+                width: 300,
+                height: '100%',
+                alignSelf: 'flex-start',
+                paddingTop: 24,
+                justifyContent: 'flex-start',
+                margin: 0,
+              }}
+            >
+              <DrawerMenuContent
+                active={active}
+                setActive={setActive}
+                onClose={() => setMenuVisible(false)}
+                navigate={(name) => navRef.current?.navigate(name)}
+              />
+            </Modal>
+          </Portal>
+        </NavigationContainer>
+        
+        </ScrollView>
     </PaperProvider>
   );
 }
