@@ -18,8 +18,8 @@ export default function App() {
 
   return (
     <PaperProvider>
-      
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
+      {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }}> */}
         <NavigationContainer ref={navRef}>
           <Stack.Navigator
             screenOptions={({ route, navigation }) => ({
