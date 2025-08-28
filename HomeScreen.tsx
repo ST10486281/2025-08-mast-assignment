@@ -1,35 +1,40 @@
 // HomeScreen.tsx
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, useWindowDimensions, Platform } from 'react-native';
-import { Button, Text, Card } from 'react-native-paper';
+import { Button, Text, Card, Dialog, Portal } from 'react-native-paper';
 import QWrapper from './QWrapper';
 
-const products = [
-  { id: 1, title: 'Product A', description: 'This is product A' },
-  { id: 2, title: 'Product B', description: 'This is product B' },
-  { id: 3, title: 'Product C', description: 'This is product C' },
-  { id: 4, title: 'Product D', description: 'This is product D' },
-];
+type Product = { id: number; title: string; description: string };
 
 export default function HomeScreen({ navigation }: { navigation: any }) {
   const { width } = useWindowDimensions();
   const isDesktop = Platform.OS === 'web' && width >= 768;
 
+  const [products, setProducts] = useState<Product[]>([
+    { id: 1, title: 'Product A', description: 'This is product A' },
+    { id: 2, title: 'Product B', description: 'This is product B' },
+    { id: 3, title: 'Product C', description: 'This is product C' },
+    { id: 4, title: 'Product D', description: 'This is product D' },
+  ]);
+
+  const [selected, setSelected] = useState<Product | null>(null);
+
   // Set breadcrumbs for Home (just "Home")
   useLayoutEffect(() => {
     navigation.setOptions({
-      // Breadcrumbs accept any depth; Home is just itself.
-      // We also add navigation targets for clickable items.
-      // Here only one item so no separators beyond it.
-      // Keeping explicit to show the pattern.
-      // You can omit this; App.tsx has a sensible fallback.
-      // Included for clarity/consistency.
       // @ts-ignore
       params: {
         breadcrumbs: [{ label: 'Home', to: { name: 'Home' } }],
       },
     });
   }, [navigation]);
+
+  const confirmDelete = () => {
+    if (selected) {
+      setProducts((prev) => prev.filter((p) => p.id !== selected.id));
+      setSelected(null);
+    }
+  };
 
   return (
     <QWrapper
@@ -39,7 +44,6 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
     >
       <View>
         <Text variant="titleLarge">Welcome!</Text>
-
 
         <View
           style={{
@@ -58,11 +62,33 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
               </Card.Content>
               <Card.Actions>
                 <Button onPress={() => navigation.navigate('Details')}>View</Button>
+                <Button textColor="red" onPress={() => setSelected(p)}>
+                  Delete
+                </Button>
               </Card.Actions>
             </Card>
           ))}
         </View>
       </View>
+
+      {/* Confirmation Dialog */}
+      <Portal>
+        <Dialog visible={!!selected} onDismiss={() => setSelected(null)}>
+          <Dialog.Title>Confirm Delete</Dialog.Title>
+          <Dialog.Content>
+            <Text>
+              Are you sure you want to delete{' '}
+              <Text style={{ fontWeight: 'bold' }}>{selected?.title}</Text>?
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setSelected(null)}>Cancel</Button>
+            <Button textColor="red" onPress={confirmDelete}>
+              Delete
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </QWrapper>
   );
 }
