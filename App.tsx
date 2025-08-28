@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { ScrollView } from 'react-native'; // 👈 add
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Provider as PaperProvider, IconButton, Portal, Modal } from 'react-native-paper';
+import { Provider as PaperProvider, IconButton, Portal, Modal, MD3LightTheme  } from 'react-native-paper';
 
 import HomeScreen from './HomeScreen';
 import DetailsScreen from './DetailsScreen';
@@ -11,15 +11,25 @@ import DrawerMenuContent from './DrawerMenuContent';
 
 const Stack = createNativeStackNavigator();
 
+const theme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    background: '#ffffff',
+    surface: '#ffffff',
+  },
+};
+
+
 export default function App() {
   const navRef = useRef<any>(null);
   const [menuVisible, setMenuVisible] = useState(false);
   const [active, setActive] = useState('home');
 
   return (
-    <PaperProvider>
-    <ScrollView style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
-      {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }}> */}
+    <PaperProvider theme={theme}>
+      <ScrollView style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
+        {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }}> */}
         <NavigationContainer ref={navRef}>
           <Stack.Navigator
             screenOptions={({ route, navigation }) => ({
@@ -63,7 +73,7 @@ export default function App() {
           </Portal>
         </NavigationContainer>
         
-        </ScrollView>
+      </ScrollView>
     </PaperProvider>
   );
 }
