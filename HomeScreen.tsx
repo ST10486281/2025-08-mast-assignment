@@ -91,7 +91,11 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
 
       {/* Delete Dialog */}
       <Portal>
-        <Dialog visible={!!deleteTarget} onDismiss={() => setDeleteTarget(null)}>
+        <Dialog
+          visible={!!deleteTarget}
+          onDismiss={() => setDeleteTarget(null)}
+          style={{ backgroundColor: 'white' }}   // 👈 plain white bg
+        >
           <Dialog.Title>Confirm Delete</Dialog.Title>
           <Dialog.Content>
             <Text>
@@ -101,16 +105,17 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setDeleteTarget(null)}>Cancel</Button>
-            <Button textColor="red" onPress={confirmDelete}>
-              Delete
-            </Button>
+            <Button textColor="red" onPress={confirmDelete}>Delete</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
 
-      {/* Edit Dialog */}
       <Portal>
-        <Dialog visible={!!editTarget} onDismiss={() => setEditTarget(null)}>
+        <Dialog
+          visible={!!editTarget}
+          onDismiss={() => setEditTarget(null)}
+          style={{ backgroundColor: 'white' }}   // 👈 plain white bg
+        >
           <Dialog.Title>Edit Product</Dialog.Title>
           <Dialog.Content>
             <TextInput
@@ -132,6 +137,7 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
           </Dialog.Actions>
         </Dialog>
       </Portal>
+
     </QWrapper>
   );
 }
