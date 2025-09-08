@@ -6,6 +6,9 @@ import QWrapper from './QWrapper'; // <-- use the wrapper we made
 
 export default function HelloScreen() {
   const [name, setName] = useState('');
+  const [error, setError] = useState('');
+
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -35,6 +38,19 @@ export default function HelloScreen() {
                 <Button mode="contained" onPress={() => alert(`Hello, ${name || 'there'}`)}>
                   Say Hello
                 </Button>
+                <Button
+                  onPress={() => {
+                  if (name !== "") { // check if not empty
+                    setError(""); // clear error
+                    console.log("Welcome " + name); // print message
+                  } else {
+                    setError("Name is required!"); // show error if empty
+                  }
+                  }}
+                >
+                  Submit
+                </Button>
+                <Text style={{ color:'red', marginTop: 10 }}>{error}</Text>
               </View>
             </Card>
         </View>
