@@ -5,4 +5,5 @@
 - 2025/11/11 12:48: Refined "Manage Items" Screen, changed Home Screen and added Navigatio Menu
 - 2025/11/11 13:09: Added "Filter By Course" Screen
 - 2025/11/11 13:23: Added "Delete" ability and "Average Prices" text
+- 2025/11/11 13:37: Addressed Feedback
 
